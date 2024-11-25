@@ -1,7 +1,10 @@
-import React from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { Line, Doughnut } from "react-chartjs-2";
+import $ from "jquery";
+import "datatables.net";
 
-import { useTable } from "react-table";
+import { useTable, useSortBy, usePagination } from "react-table";
+import axios from "axios";
 import "./Component.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -29,6 +32,83 @@ ChartJS.register(
 );
 
 const Dashboard = ({ isOpen }) => {
+  const statsData = {
+    notifications: [
+      {
+        time: "2024-11-25 10:00 AM",
+        type: "Info",
+        message: "Your order was successfully placed.",
+      },
+      {
+        time: "2024-11-25 11:30 AM",
+        type: "Warning",
+        message: "The market is volatile.",
+      },
+      {
+        time: "2024-11-25 12:45 PM",
+        type: "Error",
+        message: "Order failed due to insufficient balance.",
+      },
+    ],
+  };
+
+  useEffect(() => {
+    $("#notificationsTable").DataTable();
+  }, []);
+
+  const [tableData, setTableData] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get("/trades.json")
+      .then((response) => {
+        setTableData(response.data);
+        console.log("LLLL", response.data);
+      })
+      .catch((error) => console.error("Error fetching table data:", error));
+  }, []);
+
+  const columns = useMemo(
+    () => [
+      { Header: "Symbol", accessor: "symbol" },
+      { Header: "Type", accessor: "type" },
+      { Header: "Open Date", accessor: "openDate" },
+      { Header: "Open Price", accessor: "openPrice" },
+      { Header: "Stop Loss (SL)", accessor: "sl" },
+      { Header: "Take Profit (TP)", accessor: "tp" },
+      { Header: "Close Date", accessor: "closeDate" },
+      { Header: "Close Price", accessor: "closePrice" },
+      { Header: "Lots", accessor: "lots" },
+      { Header: "Profit ($)", accessor: "profit" },
+      { Header: "Duration", accessor: "duration" },
+      { Header: "Gain (%)", accessor: "gain" },
+    ],
+    []
+  );
+
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    rows,
+    page,
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    nextPage,
+    previousPage,
+    state: { pageIndex },
+  } = useTable(
+    {
+      columns,
+      data: tableData,
+      initialState: { pageSize: 5 },
+    },
+    useSortBy,
+    usePagination
+  );
+
   const pieData = {
     labels: ["NZDUSD", "USDCHF", "GBPUSD", "AUDNZD"],
     datasets: [
@@ -79,69 +159,6 @@ const Dashboard = ({ isOpen }) => {
     plugins: {
       legend: { display: false },
     },
-  };
-
-  const tableData = React.useMemo(
-    () => [
-      {
-        symbol: "EURUSD.i",
-        type: "Buy",
-        openDate: "2024-11-20",
-        openPrice: "1.105",
-        sl: "1.100",
-        tp: "1.120",
-        closeDate: "2024-11-21",
-        closePrice: "1.115",
-        lots: "1.0",
-        profit: "100",
-        duration: "24h",
-        gain: "9%",
-      },
-    ],
-    []
-  );
-
-  const columns = React.useMemo(
-    () => [
-      { Header: "Symbol", accessor: "symbol" },
-      { Header: "Type", accessor: "type" },
-      { Header: "Open Date", accessor: "openDate" },
-      { Header: "Open Price", accessor: "openPrice" },
-      { Header: "SL", accessor: "sl" },
-      { Header: "TP", accessor: "tp" },
-      { Header: "Close Date", accessor: "closeDate" },
-      { Header: "Close Price", accessor: "closePrice" },
-      { Header: "Lots", accessor: "lots" },
-      { Header: "Profit", accessor: "profit" },
-      { Header: "Duration", accessor: "duration" },
-      { Header: "Gain", accessor: "gain" },
-    ],
-    []
-  );
-
-  const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
-    useTable({ columns, data: tableData });
-
-  const statsData = {
-    averageWin: "$642.00",
-    averageLoss: "$0.00",
-    profitFactor: "6.4",
-    bestTrade: "$8,908.99",
-    winRatio: "-$4,800.90",
-    riskReward: "$3,490.00",
-    notifications: [
-      {
-        time: "12 days ago",
-        type: "RulesSoftBreach",
-        message: "Closed trade not placed with a stop-loss",
-      },
-      {
-        time: "8 days ago",
-        type: "RulesSoftBreach",
-        message: "Days since a trade was placed, closed...",
-      },
-      // ... more notifications
-    ],
   };
 
   return (
@@ -348,7 +365,10 @@ const Dashboard = ({ isOpen }) => {
         </div>
         <div className="card shadow-sm col-md-6">
           <h5>Notifications</h5>
-          <table className="table table-striped table-bordered">
+          <table
+            id="notificationsTable"
+            className="table table-striped table-bordered"
+          >
             <thead>
               <tr>
                 <th>Time</th>
@@ -370,10 +390,10 @@ const Dashboard = ({ isOpen }) => {
       </div>
 
       <div className="row">
-        <div className="col-md-12">
+        <div className="card col-md-12">
           <h2 className="mb-3">Order History</h2>
-          <div className="card shadow-sm">
-            <div className="card-body">
+          <div className="shadow-sm">
+            <div className="">
               <table
                 {...getTableProps()}
                 className="table table-striped table-bordered"
@@ -381,24 +401,37 @@ const Dashboard = ({ isOpen }) => {
                 <thead>
                   {headerGroups.map((headerGroup) => (
                     <tr
-                      key={headerGroup.id}
                       {...headerGroup.getHeaderGroupProps()}
+                      key={headerGroup.id}
                     >
                       {headerGroup.headers.map((column) => (
-                        <th key={column.id} {...column.getHeaderProps()}>
+                        <th
+                          {...column.getHeaderProps(
+                            column.getSortByToggleProps()
+                          )}
+                          key={column.id}
+                          style={{ cursor: "pointer" }}
+                        >
                           {column.render("Header")}
+                          <span>
+                            {column.isSorted
+                              ? column.isSortedDesc
+                                ? " 🔽"
+                                : " 🔼"
+                              : ""}
+                          </span>
                         </th>
                       ))}
                     </tr>
                   ))}
                 </thead>
                 <tbody {...getTableBodyProps()}>
-                  {rows.map((row) => {
+                  {page.map((row) => {
                     prepareRow(row);
                     return (
-                      <tr key={row.id} {...row.getRowProps()}>
+                      <tr {...row.getRowProps()} key={row.id}>
                         {row.cells.map((cell) => (
-                          <td key={cell.column.id} {...cell.getCellProps()}>
+                          <td {...cell.getCellProps()} key={cell.column.id}>
                             {cell.render("Cell")}
                           </td>
                         ))}
@@ -407,6 +440,29 @@ const Dashboard = ({ isOpen }) => {
                   })}
                 </tbody>
               </table>
+
+              <div className="d-flex justify-content-between align-items-center mt-3">
+                <button
+                  className="btn btn-outline-primary btn-sm"
+                  onClick={() => previousPage()}
+                  disabled={!canPreviousPage}
+                >
+                  Previous
+                </button>
+                <span>
+                  Page{" "}
+                  <strong>
+                    {pageIndex + 1} of {pageOptions.length}
+                  </strong>
+                </span>
+                <button
+                  className="btn btn-outline-primary btn-sm"
+                  onClick={() => nextPage()}
+                  disabled={!canNextPage}
+                >
+                  Next
+                </button>
+              </div>
             </div>
           </div>
         </div>

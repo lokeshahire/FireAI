@@ -96,7 +96,7 @@
 
 .graph {
   position: relative;
-  height: 300px; /* Height for the chart */
+  height: 300px;
 }
 
 .data-table {
@@ -122,4 +122,28 @@
 
 .data-table tr:hover {
   background-color: #f1f1f1;
+}
+
+.card {
+  border-radius: 10px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+h6 {
+  font-weight: bold;
+  color: #333333;
+}
+
+.list-unstyled li {
+  font-size: 14px;
+  color: #777777;
+}
+
+.bi-three-dots {
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.dot {
+  display: inline-block;
 }

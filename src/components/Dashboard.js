@@ -1,11 +1,13 @@
 import React from "react";
-import { Line } from "react-chartjs-2";
+import { Line, Doughnut } from "react-chartjs-2";
+
 import { useTable } from "react-table";
 import "./Component.css";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import {
   Chart as ChartJS,
+  ArcElement,
   CategoryScale,
   LinearScale,
   PointElement,
@@ -15,7 +17,6 @@ import {
   Legend,
 } from "chart.js";
 
-// Register Chart.js components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,10 +24,31 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  ArcElement
 );
 
 const Dashboard = ({ isOpen }) => {
+  const pieData = {
+    labels: ["NZDUSD", "USDCHF", "GBPUSD", "AUDNZD"],
+    datasets: [
+      {
+        data: [25, 35, 20, 20],
+        backgroundColor: ["#377DFF", "#00DFA2", "#FF6B6B", "#FFA600"],
+        hoverBackgroundColor: ["#377DFF", "#00DFA2", "#FF6B6B", "#FFA600"],
+        borderWidth: 0,
+      },
+    ],
+  };
+
+  const pieOptions = {
+    plugins: {
+      legend: { display: false },
+    },
+    cutout: "75%",
+    maintainAspectRatio: false,
+  };
+
   const graphData = {
     labels: ["1", "2", "3", "4"],
     datasets: [
@@ -59,7 +81,6 @@ const Dashboard = ({ isOpen }) => {
     },
   };
 
-  // Data for the table
   const tableData = React.useMemo(
     () => [
       {
@@ -112,9 +133,8 @@ const Dashboard = ({ isOpen }) => {
       }}
       className="container my-4"
     >
-      {/* Row 1: Balance Chart */}
       <div className="row mb-4">
-        <div className="col-lg-8">
+        <div className="col-lg-7">
           <div className="card shadow-sm">
             <div className="card-body">
               <h5>Total Balance</h5>
@@ -126,69 +146,147 @@ const Dashboard = ({ isOpen }) => {
           </div>
         </div>
 
-        <div className="col-lg-4">
-          {/* Cards for Profit Target and Loss Limit */}
-          <div className="card shadow-sm mb-3">
-            <div className="card-body">
-              <h6>Profit Target</h6>
-              <h4>$8,908.99</h4>
-              <p className="text-secondary">
-                Equity Pass Level{" "}
-                <span className="text-primary">$124,900.00</span>
-              </p>
+        <div className="col-lg-5">
+          <div className="row gap-4 mb-4 py-0">
+            <div className="col-6 card shadow-sm mb-3 ">
+              <div className="card-body">
+                <h6>Profit Target</h6>
+                <h4>$8,908.99</h4>
+                <p className="text-secondary">
+                  Equity Pass <br /> Level{" "}
+                  <span className="text-primary">$124,900.00</span>
+                </p>
+              </div>
+            </div>
+            <div className="col-5 card shadow-sm mb-3">
+              <div className="card-body">
+                <h6>Daily Loss Limit</h6>
+                <h4>$12,908.99</h4>
+                <p className="text-secondary">
+                  Equity Breach Level{" "}
+                  <span className="text-danger">$124,900.00</span>
+                </p>
+              </div>
             </div>
           </div>
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h6>Daily Loss Limit</h6>
-              <h4>$12,908.99</h4>
-              <p className="text-secondary">
-                Equity Breach Level{" "}
-                <span className="text-danger">$124,900.00</span>
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
+          <div className="row">
+            <div
+              className="card shadow-sm p-3"
+              style={{ borderRadius: "10px" }}
+            >
+              <div className="d-flex justify-content-between align-items-center mb-3">
+                <h6 className="m-0">Most Traded</h6>
+                <i className="bi bi-three-dots"></i>
+              </div>
+              <div className="d-flex align-items-center">
+                <div className="flex-grow-1">
+                  <ul className="list-unstyled mb-0">
+                    <li className="d-flex align-items-center mb-2">
+                      <span
+                        className="dot"
+                        style={{
+                          backgroundColor: "#377DFF",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                        }}
+                      ></span>
+                      NZDUSD
+                    </li>
+                    <li className="d-flex align-items-center mb-2">
+                      <span
+                        className="dot"
+                        style={{
+                          backgroundColor: "#FF6B6B",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                        }}
+                      ></span>
+                      GBPUSD
+                    </li>
+                    <li className="d-flex align-items-center mb-2">
+                      <span
+                        className="dot"
+                        style={{
+                          backgroundColor: "#00DFA2",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                        }}
+                      ></span>
+                      AUDCHF
+                    </li>
+                  </ul>
+                </div>
+                <div className="flex-grow-1">
+                  <ul className="list-unstyled mb-0">
+                    <li className="d-flex align-items-center mb-2">
+                      <span
+                        className="dot"
+                        style={{
+                          backgroundColor: "#377DFF",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                        }}
+                      ></span>
+                      NZDUSD
+                    </li>
+                    <li className="d-flex align-items-center mb-2">
+                      <span
+                        className="dot"
+                        style={{
+                          backgroundColor: "#FF6B6B",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                        }}
+                      ></span>
+                      GBPUSD
+                    </li>
+                    <li className="d-flex align-items-center mb-2">
+                      <span
+                        className="dot"
+                        style={{
+                          backgroundColor: "#00DFA2",
+                          width: "10px",
+                          height: "10px",
+                          borderRadius: "50%",
+                          marginRight: "8px",
+                        }}
+                      ></span>
+                      AUDCHF
+                    </li>
+                  </ul>
+                </div>
 
-      {/* Row 2: Most Traded Section */}
-      <div className="row">
-        <div className="col-lg-6">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h6>Most Traded</h6>
-              <ul className="list-unstyled">
-                <li className="d-flex justify-content-between">
-                  <span>NZDUSD</span>
-                  <span>Value</span>
-                </li>
-                <li className="d-flex justify-content-between">
-                  <span>GBPUSD</span>
-                  <span>Value</span>
-                </li>
-                <li className="d-flex justify-content-between">
-                  <span>AUDCHF</span>
-                  <span>Value</span>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-        <div className="col-lg-6">
-          <div className="card shadow-sm">
-            <div className="card-body">
-              <h6>Total</h6>
-              <div className="d-flex justify-content-between align-items-center">
-                <h4>16</h4>
                 <div
                   style={{
-                    width: "100px",
-                    height: "100px",
-                    borderRadius: "50%",
-                    border: "5px solid #4CAF50",
+                    width: "120px",
+                    height: "120px",
+                    position: "relative",
                   }}
-                ></div>
+                >
+                  <Doughnut data={pieData} options={pieOptions} />
+                  <div
+                    className="d-flex flex-column justify-content-center align-items-center"
+                    style={{
+                      position: "absolute",
+                      top: "50%",
+                      left: "50%",
+                      transform: "translate(-50%, -50%)",
+                    }}
+                  >
+                    <h6 className="m-0">Total</h6>
+                    <h4 className="m-0">16</h4>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

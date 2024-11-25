@@ -122,6 +122,28 @@ const Dashboard = ({ isOpen }) => {
   const { getTableProps, getTableBodyProps, headerGroups, rows, prepareRow } =
     useTable({ columns, data: tableData });
 
+  const statsData = {
+    averageWin: "$642.00",
+    averageLoss: "$0.00",
+    profitFactor: "6.4",
+    bestTrade: "$8,908.99",
+    winRatio: "-$4,800.90",
+    riskReward: "$3,490.00",
+    notifications: [
+      {
+        time: "12 days ago",
+        type: "RulesSoftBreach",
+        message: "Closed trade not placed with a stop-loss",
+      },
+      {
+        time: "8 days ago",
+        type: "RulesSoftBreach",
+        message: "Days since a trade was placed, closed...",
+      },
+      // ... more notifications
+    ],
+  };
+
   return (
     <div
       style={{
@@ -293,7 +315,59 @@ const Dashboard = ({ isOpen }) => {
         </div>
       </div>
 
-      <div className="my-4"></div>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="row gap-3">
+            <div className="card p-2 col-md-3">
+              <h5>Average Win</h5>
+              <p>{statsData.averageWin}</p>
+            </div>
+            <div className="card p-2 col-md-4">
+              <h5>Average Loss</h5>
+              <p>{statsData.averageLoss}</p>
+            </div>
+            <div className="card p-2 col-md-4">
+              <h5>Profit Factor</h5>
+              <p>{statsData.profitFactor}</p>
+            </div>
+          </div>
+          <div className="row gap-3">
+            <div className="card p-2 col-md-3">
+              <h5>Best Trade</h5>
+              <p>{statsData.bestTrade}</p>
+            </div>
+            <div className="card p-2 col-md-4">
+              <h5>Win Ratio</h5>
+              <p>{statsData.winRatio}</p>
+            </div>
+            <div className="card p-2 col-md-4">
+              <h5>Risk Reward</h5>
+              <p>{statsData.riskReward}</p>
+            </div>
+          </div>
+        </div>
+        <div className="card shadow-sm col-md-6">
+          <h5>Notifications</h5>
+          <table className="table table-striped table-bordered">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Type</th>
+                <th>Message</th>
+              </tr>
+            </thead>
+            <tbody>
+              {statsData.notifications.map((notification, index) => (
+                <tr key={index}>
+                  <td>{notification.time}</td>
+                  <td>{notification.type}</td>
+                  <td>{notification.message}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
 
       <div className="row">
         <div className="col-md-12">

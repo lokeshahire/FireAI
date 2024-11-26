@@ -18,9 +18,18 @@
   height: 100%;
   color: #2a363b;
   transition: width 0.3s ease;
-  border-right: 1px #4d606e solid;
+  /* border-right: 1px #4d606e solid; */
   padding-top: 15px;
   padding-right: 30px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
+.card {
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px !important;
+  color: red;
+  border: none !important;
+}
+.shadow-sm {
+  box-shadow: none !important;
 }
 
 .sidebar .sidebar-position {
@@ -38,7 +47,6 @@
 }
 
 .sidebar svg {
-  color: #e84a5f;
   min-width: 25px;
 }
 
@@ -55,7 +63,7 @@
 }
 
 .sidebar--open {
-  width: 250px;
+  width: 300px;
   transition: width 0.3s ease;
 }
 
@@ -76,6 +84,9 @@
 
 .navbar {
   padding-left: 20px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  border-radius: 5px;
+  height: 75px;
 }
 
 /* Dashborad css  */
@@ -126,7 +137,12 @@
 
 .card {
   border-radius: 10px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px !important;
+}
+#graphchart {
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
+    rgba(0, 0, 0, 0.3) 0px 8px 16px -8px !important;
 }
 
 h6 {
@@ -174,7 +190,6 @@ h6 {
   display: flex;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
   cursor: pointer;
 }
 
@@ -205,5 +220,137 @@ h6 {
 }
 
 .dt-layout-cell .dt-layout-end {
+  display: none;
+}
+
+.button-container {
+  display: flex;
+  gap: 8px;
+}
+
+button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px !important;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.payout {
+  background-color: #3367d6;
+  color: white;
+}
+
+.payout:hover {
+  background-color: #274bb5;
+}
+
+.share-matrices {
+  background-color: #edf1fc;
+  color: #3367d6;
+}
+
+.share-matrices:hover {
+  background-color: #dbe7fc;
+}
+
+.key {
+  background-color: #edf1fc;
+  color: #3367d6;
+}
+
+.key:hover {
+  background-color: #dbe7fc;
+}
+
+#notificationsTable th:first-child,
+#notificationsTable td:first-child {
+  width: 30%;
+}
+
+#notificationsTable th:nth-child(2),
+#notificationsTable td:nth-child(2) {
+  width: 10%;
+}
+
+#notificationsTable th:nth-child(3),
+#notificationsTable td:nth-child(3) {
+  width: 70%;
+}
+.nothead {
+  border-radius: 20% !important;
+}
+#notificationsTable thead tr {
+  background-color: #f7f9fc;
+  color: #7a7a7a;
+}
+
+#notificationsTable th {
+  padding: 10px;
+  text-align: left;
+  font-weight: 600;
+  color: #7a7a7a;
+  border-bottom: 2px solid #eaeaea;
+}
+
+#notificationsTable tbody tr {
+  border-bottom: 1px solid #eaeaea;
+  color: #4a4a4a;
+}
+
+#notificationsTable td {
+  padding: 10px;
+  vertical-align: middle;
+}
+
+#notificationsTable td:nth-child(2) {
+  font-weight: 600;
+  color: #3367d6;
+}
+
+.pagination-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+.pagination-container span {
+  color: #7a7a7a;
+}
+
+.pagination-buttons {
+  display: flex;
+  gap: 5px;
+}
+
+.pagination-buttons button {
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  padding: 5px 10px;
+  background-color: transparent;
+  cursor: pointer;
+  color: #3367d6;
+  font-size: 14px;
+  transition: background-color 0.3s ease;
+}
+
+.pagination-buttons button:hover {
+  background-color: #eaf2ff;
+}
+
+.pagination-buttons button.active {
+  font-weight: bold;
+  background-color: #eaf2ff;
+}
+.dt-paging-button,
+.dt-length,
+.dt-search {
   display: none;
 }

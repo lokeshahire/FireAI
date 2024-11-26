@@ -35,19 +35,14 @@ const Dashboard = ({ isOpen }) => {
   const statsData = {
     notifications: [
       {
-        time: "2024-11-25 10:00 AM",
-        type: "Info",
-        message: "Your order was successfully placed.",
+        time: "12 days ago",
+        type: "RulesSoftBreach",
+        message: "Closed trade not placed with a stop-loss",
       },
       {
-        time: "2024-11-25 11:30 AM",
-        type: "Warning",
-        message: "The market is volatile.",
-      },
-      {
-        time: "2024-11-25 12:45 PM",
-        type: "Error",
-        message: "Order failed due to insufficient balance.",
+        time: "8 days ago",
+        type: "RulesSoftBreach",
+        message: "Days since a trade was placed, closed...",
       },
     ],
   };
@@ -175,7 +170,7 @@ const Dashboard = ({ isOpen }) => {
       <div className="row mb-4">
         <div className="col-lg-7">
           <div className="card shadow-sm">
-            <div className="card-body">
+            <div className="card-body" id="graphchart">
               <h5>Total Balance</h5>
               <p className="text-success">Profit: +0.8%</p>
               <div style={{ height: "300px" }}>
@@ -187,7 +182,7 @@ const Dashboard = ({ isOpen }) => {
 
         <div className="col-lg-5">
           <div className="row gap-4 mb-4 py-0">
-            <div className="col-6 card shadow-sm mb-3 ">
+            <div className="col-6 card shadow-sm mb-3 " id="graphchart">
               <div className="card-body">
                 <h6>Profit Target</h6>
                 <h4>$8,908.99</h4>
@@ -197,7 +192,7 @@ const Dashboard = ({ isOpen }) => {
                 </p>
               </div>
             </div>
-            <div className="col-5 card shadow-sm mb-3">
+            <div className="col-5 card shadow-sm mb-3" id="graphchart">
               <div className="card-body">
                 <h6>Daily Loss Limit</h6>
                 <h4>$12,908.99</h4>
@@ -211,6 +206,7 @@ const Dashboard = ({ isOpen }) => {
           <div className="row">
             <div
               className="card shadow-sm p-3"
+              id="graphchart"
               style={{ borderRadius: "10px" }}
             >
               <div className="d-flex justify-content-between align-items-center mb-3">
@@ -335,57 +331,68 @@ const Dashboard = ({ isOpen }) => {
       <div className="row">
         <div className="col-md-6">
           <div className="row gap-3">
-            <div className="card p-2 col-md-3">
+            <div className="card p-3 col-md-3">
               <h5>Average Win</h5>
-              <p>{statsData.averageWin}</p>
+              <p>$642.00</p>
             </div>
-            <div className="card p-2 col-md-4">
+            <div className="card p-3 col-md-4">
               <h5>Average Loss</h5>
-              <p>{statsData.averageLoss}</p>
+              <p>$0.00</p>
             </div>
-            <div className="card p-2 col-md-4">
+            <div className="card p-3 col-md-4">
               <h5>Profit Factor</h5>
-              <p>{statsData.profitFactor}</p>
+              <p>6.4</p>
             </div>
           </div>
           <div className="row gap-3">
-            <div className="card p-2 col-md-3">
+            <div className="card p-3 col-md-3">
               <h5>Best Trade</h5>
-              <p>{statsData.bestTrade}</p>
+              <p>$8909.99</p>
             </div>
-            <div className="card p-2 col-md-4">
+            <div className="card p-3 col-md-4">
               <h5>Win Ratio</h5>
-              <p>{statsData.winRatio}</p>
+              <p>-$4800.99</p>
             </div>
-            <div className="card p-2 col-md-4">
+            <div className="card p-3 col-md-4">
               <h5>Risk Reward</h5>
-              <p>{statsData.riskReward}</p>
+              <p>$3400.00</p>
             </div>
           </div>
         </div>
-        <div className="card shadow-sm col-md-6">
-          <h5>Notifications</h5>
-          <table
-            id="notificationsTable"
-            className="table table-striped table-bordered"
-          >
-            <thead>
-              <tr>
-                <th>Time</th>
-                <th>Type</th>
-                <th>Message</th>
-              </tr>
-            </thead>
-            <tbody>
-              {statsData.notifications.map((notification, index) => (
-                <tr key={index}>
-                  <td>{notification.time}</td>
-                  <td>{notification.type}</td>
-                  <td>{notification.message}</td>
+        <div className="col-md-6">
+          <div className="card p-4 py-2">
+            <h5>Notifications</h5>
+            <table id="notificationsTable">
+              <thead className="nothead">
+                <tr>
+                  <th>Time</th>
+                  <th>Type</th>
+                  <th>Message</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {statsData.notifications.map((notification, index) => (
+                  <tr key={index}>
+                    <td>{notification.time}</td>
+                    <td>{notification.type}</td>
+                    <td>{notification.message}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className="pagination-container">
+              <span>Showing: 32</span>
+              <div className="pagination-buttons">
+                <button>&lt;</button>
+                {[1, 2, 3, 4].map((page) => (
+                  <button key={page} className={page === 1 ? "active" : ""}>
+                    {page}
+                  </button>
+                ))}
+                <button>&gt;</button>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 

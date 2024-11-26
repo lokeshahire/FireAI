@@ -30,6 +30,9 @@ const Sidebar = ({ isOpen, handleTrigger }) => {
       </div>
 
       <div className="sidebar-menu">
+        <div>
+          <span> {isOpen ? "Menu" : ""} </span>
+        </div>
         <div className="sidebar-menu-item">
           <FontAwesomeIcon icon={faDollarSign} />
           <span> {isOpen ? "Accounts Overview" : ""} </span>
@@ -50,6 +53,9 @@ const Sidebar = ({ isOpen, handleTrigger }) => {
           <FontAwesomeIcon icon={faListAlt} />
           <span>{isOpen ? "Order List" : ""}</span>
         </div>
+        <hr />
+        <span> {isOpen ? "Apps" : ""} </span>
+
         <div className="sidebar-menu-item">
           <FontAwesomeIcon icon={faChartPie} />
           <span>{isOpen ? "News Feeds" : ""}</span>
@@ -73,7 +79,7 @@ const Sidebar = ({ isOpen, handleTrigger }) => {
       </div>
 
       <div className="sidebar-footer">
-        <div className="sidebar-footer-item">
+        {/* <div className="sidebar-footer-item">
           <span>{isOpen ? "Account" : ""}</span>
           <span>{isOpen ? "9999999" : ""}</span>
         </div>
@@ -84,11 +90,13 @@ const Sidebar = ({ isOpen, handleTrigger }) => {
         <div className="sidebar-footer-item">
           <span>{isOpen ? "Program" : ""}</span>
           <span>{isOpen ? "$50,000 Evl." : ""}</span>
-        </div>
-        <div className="sidebar-footer-item">
-          <img src="user-avatar.png" alt="User Avatar" />
-          <span>{isOpen ? "Daniel Sullivan" : ""}</span>
-          <span>{isOpen ? "alex@gmail.com" : ""}</span>
+        </div> */}
+        <div className="sidebar-footer-item gap-5">
+          <img src={"/user.png"} alt="User Avatar" />
+          <div className="d-inline-block">
+            <p>{isOpen ? "Daniel Sullivan" : ""}</p>
+            <p>{isOpen ? "alex@gmail.com" : ""}</p>
+          </div>
         </div>
       </div>
     </div>
